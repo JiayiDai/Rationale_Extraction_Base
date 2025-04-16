@@ -48,11 +48,8 @@ def parse_args():
     parser.add_argument('--rand_seed', type=int, default=2021, help="Random seed for torch")
     parser.add_argument('--warmup',  action='store_true', default=False, help="Linear LR warm up")
     parser.add_argument('--datasize', type=int, default=5000, help="The number of examples used for training")
-    parser.add_argument('--kd',  action='store_true', default=False, help="If do knowledge distillation")
-    parser.add_argument('--student_form', type=str, default='cnn', help='student model is cnn/bilstm/bert' )
-    parser.add_argument('--kd_lambda', type=float, default=0, help="lambda for kd loss")
-    
-    
+    parser.add_argument('--task_name', type=str, default="test_run", help="Give a name to the run for result paths")
+
     args = parser.parse_args()
     # update args and print
     args.filters = [int(k) for k in args.filters.split(',')]

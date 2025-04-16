@@ -6,7 +6,7 @@ def get_optimizer(models, args):
     params = []
     for model in models:
         params.extend([param for param in model.parameters() if param.requires_grad])
-    return torch.optim.AdamW(params, lr=args.lr)
+    return torch.optim.AdamW(params, lr=args.lr, weight_decay=0.01)
 
 def get_loss(logit,y):
     loss = nn.CrossEntropyLoss()

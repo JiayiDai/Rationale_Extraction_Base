@@ -68,7 +68,7 @@ class Generator(nn.Module):
             z, probs, log_probs = self.__z_forward(F.relu(activ), "bilstm")
         elif self.args.model_form == "bert":
             activ = self.bert(x_indx, att_mask, inputs_embeds=x)
-            z, probs, log_probs = self.__z_forward(F.relu(activ), "bert")
+            z, probs, log_probs = self.__z_forward(activ, "bert")
         else:
             raise NotImplementedError("Model form {} not yet supported for generator!".format(args.model_form))
         mask = self.sample(z)

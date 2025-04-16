@@ -2,7 +2,7 @@ from os.path import dirname, realpath
 import sys
 sys.path.append(dirname(dirname(realpath(__file__))))
 import torch
-import data.retrive_data as retrive_data
+import data.retrive_data_balanced as retrive_data
 import utils.params as params
 import nns.generator as generator
 import nns.encoder as encoder
@@ -20,12 +20,11 @@ if __name__ == '__main__':
 
     train_data, dev_data, test_data = retrive_data.get_dataloaders(args)
     #get trained models
-
     if args.train:
         gen, enc = generator.Generator(args), encoder.Encoder(args)
         gen, enc = learn.train(train_data, dev_data, gen, enc, args)
-        
     else:
-        gen = torch.load(os.path.join(args.save_dir, "_gen_t"))
-        enc = torch.load(os.path.join(args.save_dir, "_enc_t"))
-    test_stats = learn.test(test_data, gen, enc, args)
+        gen = torch.load(os.path.join(args.save_dir, "gen_"+args.task_name), weights_only=False)
+        enc = torch.load(os.path.join(args.save_dir, "enc_"+args.task_name), weights_only=False)
+    if args.test:
+        test_stats = learn.test(test_data, gen, enc, args)

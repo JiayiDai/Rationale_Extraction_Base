@@ -12,5 +12,8 @@ def get_metrics(preds, golds):
 
 def formatting(metrics, decimals=3):
     for key, value in metrics.items():
-        metrics[key] = numpy.round(value, decimals)
+        if key != 'confusion_matrix':
+            metrics[key] = float(numpy.round(value, decimals))
+        else:
+            metrics[key] = numpy.round(value, decimals)
     return(metrics)

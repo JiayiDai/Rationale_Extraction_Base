@@ -23,12 +23,12 @@ class Encoder(nn.Module):
             self.hidden = nn.Linear(args.hidden_dim, args.num_class)
         elif args.model_form == "bert":
             self.bert = bert.BERT(args, encoding=True)
-            self.fc = nn.Linear(self.bert.embed_dim, args.hidden_dim)
-            self.hidden = nn.Linear(args.hidden_dim, args.num_class)
+            #self.fc = nn.Linear(self.bert.embed_dim, args.hidden_dim)
+            self.hidden = nn.Linear(self.bert.embed_dim, args.num_class)
         else:
             raise NotImplementedError("Model form {} not yet supported for encoder!".format(args.model_form))
         self.embedding_layer = embedding.bert_embeddings()
-        self.embedding_layer.weight.requires_grad = True
+        self.embedding_layer.weight.requires_grad = False
         self.dropout = nn.Dropout(args.dropout)
         self.bn = nn.BatchNorm1d(args.hidden_dim)
 
@@ -60,8 +60,9 @@ class Encoder(nn.Module):
             logit = self.hidden(hidden)
         elif self.args.model_form == 'bert':
             hidden = self.bert(x_indx, att_mask, inputs_embeds=x)
-            hidden = F.relu(self.fc(hidden))
-            hidden = self.dropout(hidden)
+
+            #hidden = F.relu(self.fc(hidden))
+            #hidden = self.dropout(hidden)
             logit = self.hidden(hidden)
         else:
             raise Exception("Model form {} not yet supported for encoder!".format(self.args.model_form))
